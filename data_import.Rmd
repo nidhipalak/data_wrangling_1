@@ -39,6 +39,18 @@ skimr::skim(litters_df)
 
 #view(litters_df) to open. but only use in console. (which we already knew)
 
+```
+
+## Options to read_csv
+
+check out `?read_csv` for more info
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv", skip = 10, col_names = FALSE) #col_names= FALSE makes up col names
+
+#litters_df = read_csv("./data/FAS_litters.csv", na = c("", "NA", ".", 999)) #replaces all those with NA
+
+litters_df = read_csv("./data/FAS_litters.csv", )
 
 ```
 
+look at read_csv
