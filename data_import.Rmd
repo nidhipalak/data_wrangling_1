@@ -54,3 +54,24 @@ litters_df = read_csv("./data/FAS_litters.csv", )
 ```
 
 look at read_csv
+
+
+## Other file formats
+read in excel file.
+
+```{r}
+library(readxl) #next time keep all loaded packages at the top of the code.
+
+mlb_df = read_excel("./data/mlb11.xlsx", range = "A1:F7")
+mlb_df
+```
+
+Read in a SAS file
+
+```{r}
+library(haven)
+
+pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
+pulse_df
+```
+
