@@ -1,21 +1,44 @@
 ---
-title: "Simple document"
-output: html_document
+title: "Data import"
+output: github_document
 ---
 
-I'm an R Markdown document! 
-
-# Section 1
-
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
-```{r}
-samp = rnorm(100)
-length(samp)
+```{r setup}
+library(tidyverse)
 ```
 
-# Section 2
+## Read in some data
 
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
+Absolute path: start from very beginning to desired folder (do not use this method) Start from harddrive-> user-> nidhipatel-> dekstop-> datasciencei-> datawanglingi->data->file. This would only apply to my computer. 
+Relative path: start where you are and go where you need to go, which is prob close by. (use this only) Start at data_import.Rmd -> data folder -> file. Can be reproduced in anyones computer
+
+Readn in the litters dataset.
+
+```{r}
+litters_df <- read_csv("./data/FAS_litters.csv")
+# the "." says starting in this folder.
+litters_df = janitor::clean_names(litters_df)
+#clean_names fn is not in tidyverse, but in janitors package. To load this fn without loading the entire package we use "::" to pull it from the package. 
+```
+
+
+## Take a look at data
+Printing in console.
+```{r}
+litters_df
+```
+
+```{r}
+head(litters_df)
+#gives first 6 rows. 
+tail(litters_df)
+#gives the last few rows.
+
+skimr::skim(litters_df)
+#tells you how many are missing, what are the white spaces, mean, std, min, max, histograms. 
+
+#view(litters_df) to open. but only use in console. (which we already knew)
+
+
+```
+
