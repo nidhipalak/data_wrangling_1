@@ -111,3 +111,13 @@ filter(litters_df, group %in% c("Mod8", "Con7"))
 #want group is either "con7" or "mod8", use %in% and list objects, but they're characters, so make sure "c" is there.
 ```
 
+## `mutate`
+
+```{r}
+mutate(
+  litters_df, 
+  wt_gain = gd18_weight - gd0_weight, #gives weight at 18-weight at 0
+  group = str_to_lower(group)    #modifies var to make everything lowercase. 
+  )
+```
+
