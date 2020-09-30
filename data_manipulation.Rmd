@@ -15,3 +15,56 @@ litters_df = janitor::clean_names(litters_df)
 
 ```
 
+## `select`
+
+Choose some columns and not others.
+
+```{r}
+select(litters_df, group, gd0_weight)
+```
+
+```{r}
+select(litters_df, group, gd0_weight:gd_of_birth)
+
+#colon specifies a range of columns. 
+```
+
+```{r}
+select(litters_df, -litter_number)
+
+# the "-" says minus litter_number. can specify what we want to lose.
+```
+
+Renaming columns. 
+
+```{r}
+select(litters_df, GROUP = group, LITTer_NuMber = litter_number)
+
+#allows to rename the columns we want to keep simultaneously 
+```
+
+```{r}
+rename(litters_df, GROUP = group, LITTer_NuMber = litter_number)
+#rename fn part of the dyplr packaage (in tidyverse)
+```
+
+
+Select helpers
+find some helper fns in ?select_helper
+
+```{r}
+select(litters_df, starts_with("gd"))
+#selects columns that start with gd. 
+```
+
+
+```{r}
+select(litters_df, litter_number, everything())
+#this selects litter number and keeps everything else. it moves litter number to the beginning. 
+```
+
+```{r}
+relocate(litters_df, litter_number)
+#does the same as the above code that uses select. This relocated it to the beginning. 
+```
+
