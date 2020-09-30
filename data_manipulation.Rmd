@@ -119,5 +119,19 @@ mutate(
   wt_gain = gd18_weight - gd0_weight, #gives weight at 18-weight at 0
   group = str_to_lower(group)    #modifies var to make everything lowercase. 
   )
+
+#can mutate multiple things in one line
+```
+
+## `arrange`
+put things in order
+
+```{r}
+arrange(litters_df, pups_born_alive)
+```
+
+```{r}
+arrange(litters_df, pups_born_alive, gd0_weight)
+#orders by pups born alive and then by weight
 ```
 
