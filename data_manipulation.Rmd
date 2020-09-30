@@ -68,3 +68,46 @@ relocate(litters_df, litter_number)
 #does the same as the above code that uses select. This relocated it to the beginning. 
 ```
 
+## `filter`
+
+```{r}
+filter(litters_df, gd0_weight < 22)
+#filters the observations of gd weight if they are less than 22 (observaion of <22)
+```
+
+```{r}
+filter(litters_df, gd0_weight >= 22)
+```
+
+```{r}
+filter(litters_df, gd_of_birth == 20)
+#two "=" is a test for EQUALITY. one "=" would make 22 go into gd_of_birth vector. 
+```
+
+```{r}
+filter(litters_df, gd_of_birth != 20)
+#exclamation is NOT EQUAL TO 
+```
+
+
+```{r}
+filter(litters_df, gd0_weight >= 22, gd_of_birth == 20)
+#give AND statement. Both things true at same time.
+```
+
+```{r}
+filter(litters_df, group == "Con7")
+#gives the group of the character "Con7"
+```
+
+```{r}
+filter(litters_df, group == "Mod8")
+
+```
+
+```{r}
+filter(litters_df, group %in% c("Mod8", "Con7"))
+
+#want group is either "con7" or "mod8", use %in% and list objects, but they're characters, so make sure "c" is there.
+```
+
