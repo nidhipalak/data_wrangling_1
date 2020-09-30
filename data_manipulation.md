@@ -495,3 +495,53 @@ arrange(litters_df, pups_born_alive, gd0_weight)
 ``` r
 #orders by pups born alive and then by weight
 ```
+
+## `%.%`
+
+Pipes
+
+``` r
+litters_raw = read_csv("./data/FAS_litters.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Group = col_character(),
+    ##   `Litter Number` = col_character(),
+    ##   `GD0 weight` = col_double(),
+    ##   `GD18 weight` = col_double(),
+    ##   `GD of Birth` = col_double(),
+    ##   `Pups born alive` = col_double(),
+    ##   `Pups dead @ birth` = col_double(),
+    ##   `Pups survive` = col_double()
+    ## )
+
+``` r
+litters_clean = janitor::clean_names(litters_raw)
+litters_selected = select(litters_clean, -pups_survive)
+litters_mutate = mutate(litters_selected, wt_gain = gd18_weight - gd0_weight)
+litters_wo_missing = drop_na(litters_mutate, wt_gain)
+```
+
+USE PIPE OPERATOR INSTEAD
+
+``` r
+litters_df = 
+  read_csv("./data/FAS_litters.csv") %>% #shift command m
+  janitor::clean_names() %>% 
+  select(-pups_survive) %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight) %>% 
+  drop_na(wt_gain)
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Group = col_character(),
+    ##   `Litter Number` = col_character(),
+    ##   `GD0 weight` = col_double(),
+    ##   `GD18 weight` = col_double(),
+    ##   `GD of Birth` = col_double(),
+    ##   `Pups born alive` = col_double(),
+    ##   `Pups dead @ birth` = col_double(),
+    ##   `Pups survive` = col_double()
+    ## )
