@@ -88,3 +88,41 @@ analysis %>%
 ``` r
 #pull the names from the columns.  The data in the columns become the new column names
 ```
+
+## Binding rows
+
+Using lord of the rings data. First step: import each table. (create
+three sep data structures. I think we can only import certain rows.)
+
+``` r
+fellowship = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "B3:D6") %>% 
+  mutate(movie = "fellowship")
+
+twotowers = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "F3:H6") %>% 
+  mutate(movie = "twotowers")
+
+returnking = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "J3:L6") %>% 
+  mutate(movie = "returnking")
+
+#mutate here adds the variable "movie" and the values are "fellowship", "twotowers", "returnking".
+```
+
+Bind all rows together
+
+``` r
+lotr_tidy = 
+  bind_rows(fellowship, twotowers, returnking) %>% 
+#we want to tidy more, no need for male and female columns, it can be under one "sex" and the values under "words"
+  janitor::clean_names() %>% 
+  relocate(movie) %>% 
+  pivot_longer(
+    female:male,
+    names_to = "gender",
+    values_to = "words"
+  )
+
+#make tidyer and make "Elf" "Hobbit" all lowercase
+```
