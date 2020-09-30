@@ -57,3 +57,34 @@ pulse_tidy =
  relocate(id, visit) %>% 
   mutate(visit = recode(visit, "bl" = "oom"))
 ```
+
+## `pivot_wider`
+
+Make up some data\!
+
+``` r
+analysis = 
+  tibble(
+    group = c("treatment", "treatment", "placebo", "placebo"),
+    time = c("pre", "post", "pre", "post"),
+    mean = c(4, 8, 3.5, 4)
+  )
+
+#if you want ot put it in a paper, so someone can look at it.
+
+analysis %>% 
+  pivot_wider(
+    names_from = "time",
+    values_from = "mean"
+  )
+```
+
+    ## # A tibble: 2 x 3
+    ##   group       pre  post
+    ##   <chr>     <dbl> <dbl>
+    ## 1 treatment   4       8
+    ## 2 placebo     3.5     4
+
+``` r
+#pull the names from the columns.  The data in the columns become the new column names
+```
