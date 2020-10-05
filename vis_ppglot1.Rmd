@@ -52,6 +52,7 @@ ggplot(aes(x = tmin, y = tmax)) +
   geom_point()
 ```
 
+
 Save and edit a plot object
 
 ```{r}
@@ -180,5 +181,29 @@ Ridge plot- most popular plot od 2017
 weather_df %>% 
   ggplot(aes(x = tmin, y = name)) + 
   geom_density_ridges() #density curves. load from ggridges package. 
+```
+
+## Save and Embed
+Let's save a scatterplot
+
+```{r}
+weather_plot = 
+  weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, fill = name)) + 
+  geom_point(alpha = 0.5)
+
+ggsave("./weather_plot.pdf", weather_plot, width = 8, height = 5)
+```
+
+What about embedding...
+
+```{r fig.width=6, fig.height=3}
+weather_plot
+```
+
+Embed at different size
+
+```{r, fig.width=12, fig.height=6}
+weather_plot
 ```
 
