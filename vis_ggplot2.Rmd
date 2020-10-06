@@ -1,0 +1,171 @@
+---
+title: "Visualizations"
+subtitle: "Part 1"
+output: github_document
+---
+
+```{r setup}
+library(tidyverse)
+library(ggridges)
+```
+
+
+```{r}
+weather_df = 
+  rnoaa::meteo_pull_monitors( 
+    c("USW00094728", "USC00519397", "USS0023B17S"), 
+    var = c("PRCP", "TMIN", "TMAX"), 
+    date_min = "2017-01-01",
+    date_max = "2017-12-31") %>%
+#rnoaa package allows you to pull public data from online. 
+#want data drom these three weather stations
+    mutate(
+    name = recode(
+      id, 
+      USW00094728 = "CentralPark_NY", 
+      USC00519397 = "Waikiki_HA",
+      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) %>%
+  #the degrees that come from rnoaa are in a 10ths of a deg C. 
+  select(name, id, everything())
+
+weather_df
+
+```
+
+## Remember this plot
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) 
+```
+
+## Scales
+
+Start with the same plot; x and y are scales
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15, 0, 15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+   # trans = "sqrt" + #does a squarert transformation, "log" transformation.  
+    position = "right" #will move the labels to the right side.
+  )
+```
+
+Look at color scales
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) +
+  scale_color_hue(
+    name = "Location", #name here is the fn not the name "name"
+    h = c(100, 300)
+      )
+```
+
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) + 
+  viridis::scale_color_viridis( #can look up package colors online
+    name = "Location",
+    discrete = TRUE
+  )
+```
+
+## Themes
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) + 
+  viridis::scale_color_viridis( #can look up package colors online
+    name = "Location",
+    discrete = TRUE) +
+  theme(legend.position = "bottom")
+```
+
+Change overall theme
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot",
+    x = "Minimum Daily Temp(C)",
+    y = "Maximum Daily Temp (C)",
+    caption = "DAta from rnoaa package; temperatures in 2017"
+  ) + 
+  viridis::scale_color_viridis( #can look up package colors online
+    name = "Location",
+    discrete = TRUE) +
+  theme_minimal() + #can also use theme_bw, or anything from the ggtheme package. ggthemes::theme_excel, etc
+#adding theme erases all the rules coded before it and makes the graph look according to that theme specifications. If you want theme_minimal and the bottom legend, add legend after the theme. 
+  theme(legend.position = "bottom")
+```
+
+## Setting options
+
+```{r}
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = 6,
+  out.width = "90X"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.color = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d()
+
+##everything in this code chunk will be applies to all the plots following.  Keep this in the first code chunk to make everything easy. 
+```
+
