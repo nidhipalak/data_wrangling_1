@@ -282,6 +282,10 @@ weather_df %>%
 what happens when you want multipanel plots but can’t facet..?
 
 ``` r
+library(patchwork)
+```
+
+``` r
 tmax_tmin_p = 
 weather_df %>% 
   ggplot(aes(x = tmin, y = tmax, color = name)) +
@@ -306,3 +310,15 @@ tmax_date_p =
 #tmax_tmin_p + prcp_dens_p + 
 #why isn't patchwork working
 ```
+
+## Data manipulation
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = name, y = tmax, fill = name)) + 
+  geom_violin(alpha = 0.5)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+<img src="vis_ggplot2_files/figure-gfm/unnamed-chunk-13-1.png" width="90X" />
