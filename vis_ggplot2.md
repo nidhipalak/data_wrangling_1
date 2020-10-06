@@ -307,18 +307,50 @@ tmax_date_p =
   theme(legend.position = "none")
 
 
-#tmax_tmin_p + prcp_dens_p + 
-#why isn't patchwork working
+(tmax_tmin_p + prcp_dens_p) / tmax_date_p
 ```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+<img src="vis_ggplot2_files/figure-gfm/unnamed-chunk-12-1.png" width="90X" />
 
 ## Data manipulation
 
 ``` r
 weather_df %>% 
+  mutate(
+    name = factor(name), 
+    name = forcats::fct_relevel(name, c("Waikiki_HA"))
+  ) %>% 
   ggplot(aes(x = name, y = tmax, fill = name)) + 
-  geom_violin(alpha = 0.5)
+  geom_violin(alpha = 0.5) #name goes in alphabetical order, but we want low to high by tmax. 
 ```
 
     ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
 
 <img src="vis_ggplot2_files/figure-gfm/unnamed-chunk-13-1.png" width="90X" />
+
+What if I wanted densities for tmin and tmax simutaneously?
+
+``` r
+weather_df%>% 
+  #filter(name == "CentralPark_NY") %>% #removed to facet with the other locations
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temps"
+  ) %>% 
+  ggplot(aes(x = temps, fill = observation)) +
+  geom_density(alpha = 0.5) + #temp distribuiton for tmax and tmin
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Removed 18 rows containing non-finite values (stat_density).
+
+<img src="vis_ggplot2_files/figure-gfm/unnamed-chunk-14-1.png" width="90X" />
