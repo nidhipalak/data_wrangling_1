@@ -97,3 +97,36 @@ weather_df %>%
   )
 ```
 
+## a digression on 2x2 tables.
+
+```{r}
+weather_df %>% 
+  filter(name != "Waikiki_HA") %>%
+  mutate(
+    cold = case_when(
+      tmax <  5 ~ "cold",
+      tmax >= 5 ~ "not_cold",
+      TRUE      ~ "" #if there is a missing value, it adds "" aka nothing
+    )) %>%
+      group_by(name, cold) %>% 
+      summarize(count = n())
+  # can reorgaize with pivot_wider.
+```
+
+other way to create 2x2 table
+
+```{r}
+weather_df %>% 
+  filter(name != "Waikiki_HA") %>%
+  mutate(
+    cold = case_when(
+      tmax <  5 ~ "cold",
+      tmax >= 5 ~ "not_cold",
+      TRUE      ~ ""
+    )
+  ) %>%
+  janitor::tabyl(name, cold)
+
+##USE THIS TO CREATE 2X2 TABLES
+```
+
