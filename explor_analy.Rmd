@@ -61,3 +61,39 @@ weather_df %>%
   ungroup(month) #leave blank ig you want to ungroup everything. 
 ```
 
+### counting things
+
+```{r}
+weather_df %>% 
+  group_by(name, month) %>% #can do name or month solo or add more vars
+  summarize(nobs = n())
+```
+
+we can use `count()`
+
+```{r}
+weather_df %>% 
+  count(name, month, name = "n_obs")
+```
+
+**NEVER** use base R's `table`
+
+```{r, eval = FALSE}
+weather_df %>% 
+  pull(month) %>% 
+  table()
+#don't ever use this, can't really evaluate. useless.
+
+```
+
+other helpful counters. 
+
+```{r}
+weather_df %>% 
+  group_by(month) %>% 
+  summarize(
+    n_obs = n(), #tells us the # of observations
+    n_days = n_distinct(date) #`n_distinct` is a fn in the dplyr package that will count distinct dates (max 31, bc there are 31 max in a month)
+  )
+```
+
