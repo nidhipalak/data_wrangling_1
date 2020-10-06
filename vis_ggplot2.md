@@ -239,3 +239,23 @@ scale_fill_discrete = scale_fill_viridis_d()
 
 ##everything in this code chunk will be applies to all the plots following.  Keep this in the first code chunk to make everything easy. 
 ```
+
+## Data args in `geom`
+
+``` r
+central_park = 
+  weather_df %>% 
+  filter(name == "CentralPark_NY")
+
+waikiki = 
+  weather_df %>% 
+  filter(name == "Waikiki_HA")
+
+ggplot(data = waikiki, aes(x = date, y = tmax, color = name)) +
+  geom_point() +
+  geom_line(data = central_park)
+```
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+<img src="vis_ggplot2_files/figure-gfm/unnamed-chunk-9-1.png" width="90X" />
