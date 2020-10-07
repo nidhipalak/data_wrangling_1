@@ -387,3 +387,72 @@ weather_df %>%
 | 2017-10-01 |            21.8 |        30.3 |           8.3 |
 | 2017-11-01 |            12.3 |        28.4 |           1.4 |
 | 2017-12-01 |             4.5 |        26.5 |           2.2 |
+
+\#\#\#\#`group_by` and `mutate`
+
+``` r
+weather_df %>% 
+  group_by(name) %>% #group first, and you have the same tmax for each group. 
+  mutate(
+    mean_tmax = mean(tmax, no.rm = TRUE),
+    centered_tmax = tmax - mean_tmax
+  ) %>% 
+  ggplot(aes(x = date, y = centered_tmax, color = name)) +
+  geom_point()
+```
+
+    ## Warning: Removed 365 rows containing missing values (geom_point).
+
+<img src="explor_analy_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
+
+what are window functions
+
+ranking
+
+``` r
+weather_df %>% 
+  group_by(name, month) %>% 
+  mutate(temp_rank = min_rank(tmax)) #this creates temp_rank, which is the rank of the tmax (instead of spitting out means, it ranks them.  In the opposite direction, you can use `min_rank(desc(tmax)
+```
+
+    ## # A tibble: 1,095 x 8
+    ## # Groups:   name, month [36]
+    ##    name           id          date        prcp  tmax  tmin month      temp_rank
+    ##    <chr>          <chr>       <date>     <dbl> <dbl> <dbl> <date>         <int>
+    ##  1 CentralPark_NY USW00094728 2017-01-01     0   8.9   4.4 2017-01-01        22
+    ##  2 CentralPark_NY USW00094728 2017-01-02    53   5     2.8 2017-01-01        12
+    ##  3 CentralPark_NY USW00094728 2017-01-03   147   6.1   3.9 2017-01-01        15
+    ##  4 CentralPark_NY USW00094728 2017-01-04     0  11.1   1.1 2017-01-01        27
+    ##  5 CentralPark_NY USW00094728 2017-01-05     0   1.1  -2.7 2017-01-01         5
+    ##  6 CentralPark_NY USW00094728 2017-01-06    13   0.6  -3.8 2017-01-01         4
+    ##  7 CentralPark_NY USW00094728 2017-01-07    81  -3.2  -6.6 2017-01-01         3
+    ##  8 CentralPark_NY USW00094728 2017-01-08     0  -3.8  -8.8 2017-01-01         2
+    ##  9 CentralPark_NY USW00094728 2017-01-09     0  -4.9  -9.9 2017-01-01         1
+    ## 10 CentralPark_NY USW00094728 2017-01-10     0   7.8  -6   2017-01-01        21
+    ## # … with 1,085 more rows
+
+lag
+
+``` r
+weather_df %>% 
+  group_by(name) %>% 
+  #mutate(lag_temp = lag(tmax)) #takes a temp and shifts it down by one. Useful to find differences in days if you subtract lag_tmax from tmax. `mutate(temp_change = tmax - lag(tmax))
+  mutate(temp_change = tmax - lag(tmax)) %>% 
+  summarize(
+    temp_change_max = max(temp_change, na.rm = TRUE),
+    temp_change_sd = sd(temp_change, na.rm = TRUE)
+  )
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+    ## # A tibble: 3 x 3
+    ##   name           temp_change_max temp_change_sd
+    ##   <chr>                    <dbl>          <dbl>
+    ## 1 CentralPark_NY            12.7           4.45
+    ## 2 Waikiki_HA                 6.7           1.23
+    ## 3 Waterhole_WA               8             3.13
+
+#### Quick note.
+
+summarize will only get you so far.

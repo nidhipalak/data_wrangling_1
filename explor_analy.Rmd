@@ -182,3 +182,41 @@ weather_df %>%
   knitr::kable(digits = 1) #rounds digits
 ```
 
+####`group_by` and `mutate`
+
+```{r}
+weather_df %>% 
+  group_by(name) %>% #group first, and you have the same tmax for each group. 
+  mutate(
+    mean_tmax = mean(tmax, no.rm = TRUE),
+    centered_tmax = tmax - mean_tmax
+  ) %>% 
+  ggplot(aes(x = date, y = centered_tmax, color = name)) +
+  geom_point()
+```
+
+what are window functions
+
+ranking
+```{r}
+weather_df %>% 
+  group_by(name, month) %>% 
+  mutate(temp_rank = min_rank(tmax)) #this creates temp_rank, which is the rank of the tmax (instead of spitting out means, it ranks them.  In the opposite direction, you can use `min_rank(desc(tmax)
+  
+```
+
+lag
+```{r}
+weather_df %>% 
+  group_by(name) %>% 
+  #mutate(lag_temp = lag(tmax)) #takes a temp and shifts it down by one. Useful to find differences in days if you subtract lag_tmax from tmax. `mutate(temp_change = tmax - lag(tmax))
+  mutate(temp_change = tmax - lag(tmax)) %>% 
+  summarize(
+    temp_change_max = max(temp_change, na.rm = TRUE),
+    temp_change_sd = sd(temp_change, na.rm = TRUE)
+  )
+```
+
+#### Quick note. 
+
+summarize will only get you so far. 
