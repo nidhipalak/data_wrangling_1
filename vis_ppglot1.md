@@ -309,7 +309,7 @@ Ridge plot- most popular plot od 2017
 ``` r
 weather_df %>% 
   ggplot(aes(x = tmin, y = name)) + 
-  geom_density_ridges() #density curves. load from ggridges package. 
+  geom_density_ridges(scale = 0.85) #density curves. load from ggridges package. 
 ```
 
     ## Picking joint bandwidth of 1.67

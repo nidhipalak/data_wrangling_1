@@ -286,6 +286,6 @@ fas %>%
   mutate(outcome = forcats::fct_relevel(outcome, "pd_ears", "pd_pivot", "pd_walk", "pd_eyes"))
   ggplot(aes(x = dose, y = pn_day)) +
   geom_violin() + 
-  facet_grid (day_of_tx ~ outcome)
+  facet_grid(day_of_tx ~ outcome)
 ```
 
